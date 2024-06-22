@@ -39,23 +39,6 @@ const passwordless = new Passwordless(authStack, "Passwordless", {
   },
 });
 
-const user = new cdk.aws_cognito.CfnUserPoolUser(authStack, "TestUser", {
-  userPoolId: passwordless.userPool.userPoolId,
-  username: TEST_USER_EMAIL,
-  messageAction: "SUPPRESS",
-  userAttributes: [
-    {
-      name: "email",
-      value: process.env.TEST_USER_EMAIL!,
-    },
-    {
-      name: "email_verified",
-      value: "true",
-    },
-  ],
-});
-user.node.addDependency(userPool.node.findChild("PreSignUpCognito"));
-
 // configurationファイルにFIDO2のURLを出力
 backend.addOutput({
   custom: {
