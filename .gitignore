@@ -4,3 +4,8 @@ node_modules
 /build
 /public/build
 .env
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*
