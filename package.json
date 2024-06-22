@@ -11,7 +11,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.1.12",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "amazon-cognito-passwordless-auth": "^0.13.2",

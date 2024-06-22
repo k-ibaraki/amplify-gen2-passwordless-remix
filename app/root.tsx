@@ -6,11 +6,11 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
-import "@aws-amplify/ui-react/styles.css";
 import { useState, useEffect } from "react";
 
 import { Passwordless, Fido2Toast } from "amazon-cognito-passwordless-auth/react";
 import { PasswordlessContextProvider } from 'amazon-cognito-passwordless-auth/react'
+import "amazon-cognito-passwordless-auth/passwordless.css";
 
 function ClientOnly({ children }: { children: React.ReactNode }) {
   const [hasMounted, setHasMounted] = useState(false);
