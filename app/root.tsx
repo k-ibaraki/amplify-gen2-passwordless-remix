@@ -8,8 +8,11 @@ import {
 import "./tailwind.css";
 import { useState, useEffect } from "react";
 
-import { Passwordless, Fido2Toast } from "amazon-cognito-passwordless-auth/react";
-import { PasswordlessContextProvider } from 'amazon-cognito-passwordless-auth/react'
+import {
+  Passwordless,
+  Fido2Toast,
+  PasswordlessContextProvider,
+} from "amazon-cognito-passwordless-auth/react";
 import "amazon-cognito-passwordless-auth/passwordless.css";
 
 function ClientOnly({ children }: { children: React.ReactNode }) {

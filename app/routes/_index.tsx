@@ -1,8 +1,52 @@
 import type { MetaFunction } from "@remix-run/node";
+import { usePasswordless } from "amazon-cognito-passwordless-auth/react";
+
+// LogoutButton
+function LogoutButton() {
+  const { signOut } = usePasswordless();
+  const handleLogout = async () => {
+    await signOut();
+    window.location.href = '/';
+  };
+  return (
+    <div>
+      <button onClick={handleLogout}>
+        ログアウト
+      </button>
+    </div>
+  );
+}
+
+// DeleteFido2CredentialsComponent
+function DeleteFido2Credentials() {
+  const { fido2Credentials, signOut } = usePasswordless();
+  const handleLogout = async () => {
+    await signOut();
+    window.location.href = '/';
+  };
+  return (
+    <div>
+      <div>
+        <ul>
+        {fido2Credentials?.map((c) => (
+          <li>
+            <button onClick={() => c.delete()}>Delete PassKey : {c.friendlyName}</button>
+          </li>
+        )) ?? <></>}
+        </ul>
+      </div>
+      <div>
+        <button onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+  }
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix SPA" },
+    { title: "Amplify Gen2 Passwordless with Remix(SPA Mode)" },
     { name: "description", content: "Welcome to Remix (SPA Mode)!" },
   ];
 };
@@ -33,6 +77,7 @@ export default function Index() {
           </a>
         </li>
       </ul>
-    </div>
+      <DeleteFido2Credentials />
+    </div>    
   );
 }
