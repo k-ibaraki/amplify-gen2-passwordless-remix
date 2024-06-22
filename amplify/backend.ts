@@ -3,11 +3,13 @@ import * as cdk from 'aws-cdk-lib';
 import { Passwordless } from "amazon-cognito-passwordless-auth/cdk";
 import { defineBackend } from '@aws-amplify/backend';
 import { auth } from './auth/resource';
+import 'dotenv/config'
 
 // 環境変数を取得
 const AUTH_FRONTEND_URL = process.env.AUTH_FRONTEND_URL ?? "";
 const AUTH_FRONTEND_HOST = process.env.AUTH_FRONTEND_HOST ?? "";
 const AUTH_EMAIL_FROM_ADDRESS = process.env.AUTH_EMAIL_FROM_ADDRESS ?? "";
+const TEST_USER_EMAIL = process.env.TEST_USER_EMAIL ?? "";
 
 // Amplifyのバックエンドを定義
 const backend = defineBackend({
@@ -36,6 +38,23 @@ const passwordless = new Passwordless(authStack, "Passwordless", {
     sesFromAddress: AUTH_EMAIL_FROM_ADDRESS!,
   },
 });
+
+const user = new cdk.aws_cognito.CfnUserPoolUser(authStack, "TestUser", {
+  userPoolId: passwordless.userPool.userPoolId,
+  username: TEST_USER_EMAIL,
+  messageAction: "SUPPRESS",
+  userAttributes: [
+    {
+      name: "email",
+      value: process.env.TEST_USER_EMAIL!,
+    },
+    {
+      name: "email_verified",
+      value: "true",
+    },
+  ],
+});
+user.node.addDependency(userPool.node.findChild("PreSignUpCognito"));
 
 // configurationファイルにFIDO2のURLを出力
 backend.addOutput({

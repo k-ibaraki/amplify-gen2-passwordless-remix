@@ -6,6 +6,25 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
+import "@aws-amplify/ui-react/styles.css";
+import { useState, useEffect } from "react";
+
+import { Passwordless, Fido2Toast } from "amazon-cognito-passwordless-auth/react";
+import { PasswordlessContextProvider } from 'amazon-cognito-passwordless-auth/react'
+
+function ClientOnly({ children }: { children: React.ReactNode }) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  return children;
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +36,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ClientOnly>
+          <PasswordlessContextProvider enableLocalUserCache={true}>
+            <Passwordless>
+              {children}
+            </Passwordless>
+            <Fido2Toast />
+          </PasswordlessContextProvider>
+        </ClientOnly>
         <ScrollRestoration />
         <Scripts />
       </body>
